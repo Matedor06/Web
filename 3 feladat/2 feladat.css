@@ -1,0 +1,62 @@
+*{
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+#flex-container
+{
+    width: 100%;
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+}
+#container1{
+    height: 60px;
+    width: 100%;
+    background-color: purple;
+    display: flex;
+    align-items: center;
+    padding-left: 2.5%;
+}
+
+.first{
+    height: 30px;
+    width: 100px;
+    background-color: aqua;
+    margin-right: 15px;
+}
+
+#container2
+{
+    height: 600px;
+    width: 95%;
+    display: flex;
+    justify-self: center;
+    flex-wrap: wrap;
+    
+}
+#second1
+{
+    height: 100%;
+    background-color: yellow;
+    flex: 2;
+    order: 2;
+   
+}
+#second2
+{
+    height: 100%;
+    background-color: green;
+    flex: 1;
+    order: 1;
+}
+#container2>div{
+    margin: 5px;
+}
+#container3
+{
+    height: 50px;
+    width: 95%;
+    background-color: gray;
+    margin-top: 10px;    
+}

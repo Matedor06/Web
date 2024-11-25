@@ -1,0 +1,47 @@
+*{
+    margin: 0;
+    padding: 0;
+}
+#flex-container
+{
+    width: 100%;
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+}
+#div1{
+    width: 95%;
+    height: 50px;
+    background-color: purple;
+    display: flex;
+    align-items: center;
+    margin-top: 20px;
+}
+
+.first{
+    height: 30px;
+    width: 120px;
+    background-color: aqua;
+    margin-left: 15px;
+}
+
+#div2
+{
+    height: 600px;
+    width: 95%;
+    display: flex;
+    justify-self: center;
+    
+}
+#second1
+{
+    height: 100%;
+    background-color: yellow;
+    flex: 2;
+}
+#second2
+{
+    height: 100%;
+    background-color: green;
+    flex: 1;
+}

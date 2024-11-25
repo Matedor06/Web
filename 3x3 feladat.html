@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html lang="hu">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Véletlen Sorrendű Számok</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+            background-color: #f0f0f0;
+        }
+
+        .container {
+            text-align: center;
+        }
+
+        .grid {
+            display: grid;
+            grid-template-columns: repeat(3, 100px);
+            grid-gap: 10px;
+            margin-bottom: 20px;
+        }
+
+        .grid div {
+            width: 100px;
+            height: 100px;
+            background-color: #fff;
+            border: 2px solid #333;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            font-size: 24px;
+            font-weight: bold;
+        }
+
+        button {
+            padding: 10px 20px;
+            font-size: 16px;
+            cursor: pointer;
+            background-color: #4CAF50;
+            color: white;
+            border: none;
+            border-radius: 5px;
+        }
+
+        button:hover {
+            background-color: #45a049;
+        }
+    </style>
+</head>
+<body>
+
+<div class="container">
+    <div class="grid" id="grid">
+        <div>1</div>
+        <div>2</div>
+        <div>3</div>
+        <div>4</div>
+        <div>5</div>
+        <div>6</div>
+        <div>7</div>
+        <div>8</div>
+        <div>9</div>
+    </div>
+    <button onclick="shuffleGrid()">Keverd meg!</button>
+</div>
+
+<script>
+    const originalOrder = [1, 2, 3, 4, 5, 6, 7, 8, 9];
+
+    function shuffleGrid() {
+        const shuffled = [...originalOrder];
+        for (let i = shuffled.length - 1; i > 0; i--) {
+            const j = Math.floor(Math.random() * (i + 1));
+            [shuffled[i], shuffled[j]] = [shuffled[j], shuffled[i]];
+        }
+
+        const grid = document.getElementById('grid');
+        const gridItems = grid.getElementsByTagName('div');
+        
+        for (let i = 0; i < gridItems.length; i++) {
+            gridItems[i].textContent = shuffled[i];
+        }
+    }
+</script>
+
+</body>
+</html>
