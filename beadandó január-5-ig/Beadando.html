@@ -1,0 +1,189 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Codewars User Info</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      background-color: var(--bg-color, #ffffff);
+      color: var(--text-color, #000000);
+      margin: 0;
+      padding: 1rem;
+      transition: all 0.3s;
+    }
+
+    .container {
+      max-width: 800px;
+      margin: 0 auto;
+    }
+
+    .form {
+      display: flex;
+      gap: 1rem;
+      margin-bottom: 2rem;
+    }
+
+    .form input {
+      flex: 1;
+      padding: 0.5rem;
+      font-size: 1rem;
+    }
+
+    .form button {
+      padding: 0.5rem 1rem;
+      font-size: 1rem;
+      cursor: pointer;
+    }
+
+    .toggle-theme {
+      margin-bottom: 1rem;
+      cursor: pointer;
+      background-color: var(--button-bg, #cccccc);
+      border: none;
+      padding: 0.5rem;
+    }
+
+    .cards {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 1rem;
+    }
+
+    .card {
+      border: 1px solid #ccc;
+      border-radius: 8px;
+      padding: 1rem;
+      flex: 1 1 calc(33% - 1rem);
+      box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+      background-color: var(--card-bg, #f9f9f9);
+      position: relative;
+    }
+
+    .card h3 {
+      margin: 0;
+    }
+
+    .card p {
+      margin: 0.5rem 0;
+    }
+
+    .card button {
+      position: absolute;
+      top: 10px;
+      right: 10px;
+      background-color: #ff4d4d;
+      color: white;
+      border: none;
+      padding: 0.3rem 0.6rem;
+      border-radius: 4px;
+      cursor: pointer;
+    }
+
+    @media (max-width: 600px) {
+      .card {
+        flex: 1 1 100%;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <button class="toggle-theme">Toggle Dark/Light Mode</button>
+    <form class="form" id="userForm">
+      <input type="text" id="username" placeholder="Enter Codewars username" required>
+      <button type="submit">Add User</button>
+    </form>
+    <div class="cards" id="cards"></div>
+  </div>
+
+  <script>
+    const API_BASE_URL = 'https://www.codewars.com/api/v1/users/';
+    const cardsContainer = document.getElementById('cards');
+    const form = document.getElementById('userForm');
+    const toggleThemeButton = document.querySelector('.toggle-theme');
+
+    const savedTheme = localStorage.getItem('theme') || 'light';
+    const savedUsers = JSON.parse(localStorage.getItem('users')) || [];
+    document.body.style.setProperty('--bg-color', savedTheme === 'dark' ? '#121212' : '#ffffff');
+    document.body.style.setProperty('--text-color', savedTheme === 'dark' ? '#ffffff' : '#000000');
+    document.body.style.setProperty('--button-bg', savedTheme === 'dark' ? '#444444' : '#cccccc');
+    document.body.style.setProperty('--card-bg', savedTheme === 'dark' ? '#1e1e1e' : '#f9f9f9');
+
+    function renderUserCard(user) {
+      const card = document.createElement('div');
+      card.classList.add('card');
+
+      card.innerHTML = `
+        <h3>${user.username}</h3>
+        <p><strong>Name:</strong> ${user.name || 'N/A'}</p>
+        <p><strong>Clan:</strong> ${user.clan || 'N/A'}</p>
+        <p><strong>Languages:</strong> ${user.languages || 'N/A'}</p>
+        <p><strong>Honor:</strong> ${user.honor}</p>
+        <p><strong>Rank:</strong> ${user.rank}</p>
+        <button onclick="deleteUser('${user.username}')">Delete</button>
+      `;
+
+      cardsContainer.appendChild(card);
+    }
+
+    async function fetchUserData(username) {
+      try {
+        const response = await fetch(`${API_BASE_URL}${username}`);
+        if (!response.ok) {
+          throw new Error('User not found');
+        }
+
+        const data = await response.json();
+        const user = {
+          username: data.username,
+          name: data.name,
+          clan: data.clan,
+          honor: data.honor,
+          rank: data.ranks.overall.name,
+          languages: Object.keys(data.ranks.languages).join(', ') || 'N/A',
+        };
+
+        savedUsers.push(user);
+        localStorage.setItem('users', JSON.stringify(savedUsers));
+        renderUserCard(user);
+      } catch (error) {
+        alert('Error fetching user data: ' + error.message);
+      }
+    }
+
+    function renderSavedUsers() {
+      cardsContainer.innerHTML = '';
+      savedUsers.forEach(renderUserCard);
+    }
+
+    function deleteUser(username) {
+      const index = savedUsers.findIndex(user => user.username === username);
+      if (index !== -1) {
+        savedUsers.splice(index, 1);
+        localStorage.setItem('users', JSON.stringify(savedUsers));
+        renderSavedUsers();
+      }
+    }
+
+    form.addEventListener('submit', (e) => {
+      e.preventDefault();
+      const username = document.getElementById('username').value;
+      if (username) {
+        fetchUserData(username);
+        form.reset();
+      }
+    });
+
+    toggleThemeButton.addEventListener('click', () => {
+      const currentTheme = localStorage.getItem('theme') || 'light';
+      const newTheme = currentTheme === 'light' ? 'dark' : 'light';
+      localStorage.setItem('theme', newTheme);
+      location.reload();
+    });
+
+    renderSavedUsers();
+  </script>
+</body>
+</html>
