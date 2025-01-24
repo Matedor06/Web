@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="hu">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="style.css">
+    <title>Tanulók és Kurzusok Kezelése</title>
+</head>
+<body>
+    <div id="container">
+        <!-- Bal oldali lista -->
+        <div id="listContainer">
+            <h2>Tanulók</h2>
+            <ul id="studentList"></ul>
+            <h2>Kurzusok</h2>
+            <ul id="courseList"></ul>
+        </div>
+
+        <!-- Jobb oldali műveletek -->
+        <div id="content">
+            <h1>Tanulók és Kurzusok Kezelése</h1>
+
+            <div id="choose" class="design">
+                <div>
+                    <label for="student">Tanuló</label>
+                    <input type="radio" name="studentCourseChoose" id="student" checked>
+                </div>
+                <div>
+                    <label for="course">Kurzus</label>
+                    <input type="radio" name="studentCourseChoose" id="course">
+                </div>
+            </div>
+
+            <div id="chooseButtons">
+                <button onclick="addNew()">Új hozzáadása</button>
+                <button onclick="modify()">Meglévő módosítása</button>
+                <button onclick="deleteItem()">Meglévő törlése</button>
+            </div>
+
+            <div id="workingField" class="design"></div>
+        </div>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+</html>
